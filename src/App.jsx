@@ -241,17 +241,19 @@ textarea { min-height: 100px; }
 
 /* ── PROGRESS BAR ── */
 .progress-wrap {
-  height: 2px;
-  background: linear-gradient(90deg, #7a5e35, #d6b370);
-  border-radius: 2px;
+  height: 6px;
+  background: rgba(214,179,112,.15);
+  border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 28px;
+  margin: 14px 0 24px;
+  border: 1px solid rgba(214,179,112,.12);
 }
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-  border-radius: 2px;
+  background: linear-gradient(90deg, #7a5e35, #d6b370);
+  border-radius: 6px;
   transition: width 400ms cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 0 8px rgba(214,179,112,.3);
 }
 
 /* ── RULE DISPLAY ── */
@@ -984,8 +986,23 @@ function Dashboard({ user, onCapture, onLogout }) {
       <div className="grain-overlay" />
       {selected && <EntryDetail entry={selected} onClose={() => setSelected(null)} />}
 
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "12px 0 0" }}>
-        <button className="btn btn-ghost btn-sm" onClick={onLogout}>Log Out</button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", padding: "12px 0 0" }}>
+        <button
+          onClick={onLogout}
+          style={{
+            background: "transparent",
+            border: "1.5px solid rgba(214,179,112,.35)",
+            borderRadius: 8,
+            cursor: "pointer",
+            color: "var(--cream-dim)",
+            fontFamily: "'Raleway', sans-serif",
+            fontSize: ".72rem",
+            fontWeight: 600,
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            padding: "7px 13px",
+          }}
+        >Log Out</button>
       </div>
 
       {/* Hero */}
@@ -1004,6 +1021,24 @@ function Dashboard({ user, onCapture, onLogout }) {
         onClick={onCapture}>
         ✦ Start a Rulebook Session
       </button>
+
+      {/* Quote */}
+      <div style={{ margin: "0 0 24px", padding: "20px 0 4px" }}>
+        <GoldDivider />
+        <p style={{ fontSize: ".82rem", fontStyle: "italic", lineHeight: 1.85, color: "var(--cream-dim)", textAlign: "center", marginTop: 12 }}>
+          "Every time you replace an automatic{" "}
+          <span style={{ color: "var(--gold)", fontStyle: "italic" }}>reaction, expectation, or obligation</span>
+          {" "}with a{" "}
+          <span style={{ color: "var(--gold)", fontStyle: "italic" }}>conscious choice</span>
+          , you are{" "}
+          <span style={{ color: "var(--cream)", fontWeight: 600, fontStyle: "italic" }}>Rewriting Your Rulebook</span>
+          . And with every rule you rewrite, you get a bit more of yourself back."
+        </p>
+        <p className="tracking mt-8" style={{ fontSize: ".65rem", color: "var(--gold-dim)", textAlign: "center" }}>
+          — Charlene Uli
+        </p>
+        <GoldDivider />
+      </div>
 
       {/* Pattern Insight */}
       {entries.length >= 1 && (
@@ -1062,16 +1097,7 @@ function Dashboard({ user, onCapture, onLogout }) {
       )}
 
       {/* Footer quote */}
-      <div className="text-center mt-32">
-        <GoldDivider />
-        <p className="muted" style={{ fontSize: ".78rem", fontStyle: "italic", lineHeight: 1.7 }}>
-          "Every time you see a rule, you get to choose.<br />
-          And every time you choose, you get a bit more of yourself back."
-        </p>
-        <p className="tracking mt-8" style={{ fontSize: ".65rem", color: "var(--gold-dim)" }}>
-          — Charlene Uli
-        </p>
-      </div>
+
     </div>
   );
 }
@@ -1098,16 +1124,51 @@ function CaptureFlow({ user, onBack, onDone, onLogout }) {
   // Shared header
   const H = ({ s }) => (
     <>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0 0" }}>
-        <LogoMark />
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <button
-            onClick={onBack}
-            title="Home"
-            style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--gold)", fontSize: "1.6rem", padding: "4px", lineHeight: 1 }}
-          >⌂</button>
-          <button className="btn btn-ghost btn-sm" onClick={onLogout}>Log Out</button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0 0", position: "relative" }}>
+
+        {/* Home button — far left */}
+        <button
+          onClick={onBack}
+          style={{
+            background: "transparent",
+            border: "1.5px solid rgba(214,179,112,.45)",
+            borderRadius: 8,
+            cursor: "pointer",
+            color: "var(--gold)",
+            fontFamily: "'Raleway', sans-serif",
+            fontSize: ".72rem",
+            fontWeight: 600,
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            padding: "7px 14px",
+            zIndex: 1,
+          }}
+        >Home</button>
+
+        {/* Logo — perfectly centered */}
+        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+          <LogoMark />
         </div>
+
+        {/* Log Out — far right, styled as button */}
+        <button
+          onClick={onLogout}
+          style={{
+            background: "transparent",
+            border: "1.5px solid rgba(214,179,112,.45)",
+            borderRadius: 8,
+            cursor: "pointer",
+            color: "var(--cream-dim)",
+            fontFamily: "'Raleway', sans-serif",
+            fontSize: ".72rem",
+            fontWeight: 600,
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            padding: "7px 14px",
+            zIndex: 1,
+          }}
+        >Log Out</button>
+
       </div>
       <ProgressBar step={s} />
     </>
@@ -1466,11 +1527,14 @@ function CompleteScreen({ onDone }) {
       />
       <h2 className="display mb-12" style={{ color: "var(--gold)", fontSize: "2rem" }}>Session Complete</h2>
       <GoldDivider />
-      <p className="muted mt-16" style={{ maxWidth: 300, lineHeight: 1.8, fontSize: ".9rem" }}>
-        Every time you see a rule,<br />
-        you get to choose.<br />
-        And every time you choose,<br />
-        you get a bit more of yourself back.
+      <p style={{ maxWidth: 320, lineHeight: 1.85, fontSize: ".82rem", fontStyle: "italic", color: "var(--cream-dim)", textAlign: "center", marginTop: 16 }}>
+        "Every time you replace an automatic{" "}
+        <span style={{ color: "var(--gold)" }}>reaction, expectation, or obligation</span>
+        {" "}with a{" "}
+        <span style={{ color: "var(--gold)" }}>conscious choice</span>
+        , you are{" "}
+        <span style={{ color: "var(--cream)", fontWeight: 600 }}>Rewriting Your Rulebook</span>
+        . And with every rule you rewrite, you get a bit more of yourself back."
       </p>
       <p className="tracking mt-12" style={{ color: "var(--gold-dim)", fontSize: ".65rem" }}>
         — Charlene Uli
